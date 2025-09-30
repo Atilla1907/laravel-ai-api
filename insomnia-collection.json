@@ -1,0 +1,219 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2024-01-31T00:00:00.000Z",
+  "__export_source": "insomnia.desktop.app:v2023.5.8",
+  "resources": [
+    {
+      "_id": "wrk_laravel_ai_api",
+      "_type": "workspace",
+      "name": "Laravel AI API",
+      "description": "API endpoints for Laravel AI Chat application",
+      "scope": "collection"
+    },
+    {
+      "_id": "env_base",
+      "_type": "environment",
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:8000/api",
+        "token": ""
+      },
+      "parentId": "wrk_laravel_ai_api"
+    },
+    {
+      "_id": "req_register",
+      "_type": "request",
+      "name": "Register User",
+      "method": "POST",
+      "url": "{{ _.base_url }}/register",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\",\n  \"password_confirmation\": \"password123\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_auth"
+    },
+    {
+      "_id": "req_login",
+      "_type": "request",
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ _.base_url }}/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"password123\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_auth"
+    },
+    {
+      "_id": "req_me",
+      "_type": "request",
+      "name": "Get Current User",
+      "method": "GET",
+      "url": "{{ _.base_url }}/me",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "parentId": "fld_auth"
+    },
+    {
+      "_id": "req_logout",
+      "_type": "request",
+      "name": "Logout",
+      "method": "POST",
+      "url": "{{ _.base_url }}/logout",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "parentId": "fld_auth"
+    },
+    {
+      "_id": "req_chat_guest",
+      "_type": "request",
+      "name": "Chat (Guest - No Auth)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/chat",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"message\": \"Vad är Laravel och varför är det populärt?\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "parentId": "fld_chat"
+    },
+    {
+      "_id": "req_chat_new_session",
+      "_type": "request",
+      "name": "Chat (New Session)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/chat",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"message\": \"Vad är Laravel och varför är det populärt?\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "parentId": "fld_chat"
+    },
+    {
+      "_id": "req_chat_continue_session",
+      "_type": "request",
+      "name": "Chat (Continue Session)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/chat",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"message\": \"Kan du ge mig ett exempel på en Laravel route?\",\n  \"session_id\": \"PUT_SESSION_ID_HERE\"\n}"
+      },
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "parentId": "fld_chat"
+    },
+    {
+      "_id": "req_get_sessions",
+      "_type": "request",
+      "name": "Get All Sessions",
+      "method": "GET",
+      "url": "{{ _.base_url }}/sessions",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "parentId": "fld_chat"
+    },
+    {
+      "_id": "req_get_session_history",
+      "_type": "request",
+      "name": "Get Session History",
+      "method": "GET",
+      "url": "{{ _.base_url }}/sessions/PUT_SESSION_ID_HERE",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "parentId": "fld_chat"
+    },
+    {
+      "_id": "req_delete_session",
+      "_type": "request",
+      "name": "Delete Specific Session",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/sessions/PUT_SESSION_ID_HERE",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "parentId": "fld_chat"
+    },
+    {
+      "_id": "req_delete_all_sessions",
+      "_type": "request",
+      "name": "Delete All Sessions",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/sessions",
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.token }}"
+        }
+      ],
+      "parentId": "fld_chat"
+    },
+    {
+      "_id": "fld_auth",
+      "_type": "request_group",
+      "name": "Authentication",
+      "parentId": "wrk_laravel_ai_api"
+    },
+    {
+      "_id": "fld_chat",
+      "_type": "request_group",
+      "name": "Chat",
+      "parentId": "wrk_laravel_ai_api"
+    }
+  ]
+}
