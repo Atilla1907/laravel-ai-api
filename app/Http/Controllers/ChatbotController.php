@@ -9,14 +9,6 @@ use Ramsey\Uuid\Uuid;
 
 class ChatbotController extends Controller
 {
-    /**
-     * Chat with the LLM (Ollama Mistral)
-     * 
-     * Handles three scenarios:
-     * 1. Guest user (no authentication) - simple chat without history
-     * 2. Authenticated user with new session - creates new session_id
-     * 3. Authenticated user with existing session - continues conversation with history
-     */
     public function chat(Request $request)
     {
         $request->validate([
@@ -27,23 +19,18 @@ class ChatbotController extends Controller
         $user = $request->user();
         $sessionId = $request->input('session_id');
 
-        // Scenario 1: Guest user (no authentication)
         if (!$user) {
             return $this->handleGuestChat($request->message);
         }
 
-        // Scenario 2: Authenticated user with new session
         if (!$sessionId) {
             return $this->handleNewSession($user, $request->message);
         }
 
-        // Scenario 3: Authenticated user with existing session
         return $this->handleExistingSession($user, $sessionId, $request->message);
     }
 
-    /**
-     * Handle chat for guest users (no authentication)
-     */
+
     private function handleGuestChat(string $message)
     {
         $response = Http::post('http://localhost:11434/api/generate', [
@@ -67,20 +54,12 @@ class ChatbotController extends Controller
         ]);
     }
 
-    /**
-     * Handle chat for authenticated user with new session
-     */
     private function handleNewSession($user, string $message)
     {
-        // Generate new UUID for the session
         $sessionId = (string) Uuid::uuid4();
-        
-        // Format message for LLM
-        $messages = [
-            ['role' => 'user', 'content' => $message]
-        ];
+        $messages = [['role' => 'user', 'content' => $message]];
 
-        // Send to LLM
+
         $response = Http::post('http://localhost:11434/api/chat', [
             'model' => 'mistral',
             'messages' => $messages,
